@@ -65,3 +65,5 @@ def wire_contract():
     if hashlib.sha256(content).hexdigest() != WIRE_CONTRACT_SHA256:
         raise InternalError("Wire contract archive checksum mismatch")
     return content
+
+from ._native import connect_native, NativeConnection, NativeJson, NativeTime, NativeResult, NativeSet

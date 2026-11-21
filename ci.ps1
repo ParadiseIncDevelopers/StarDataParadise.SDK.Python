@@ -29,8 +29,10 @@ try {
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
     & $builder -B -m build --no-isolation --outdir out/packages .
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
-    $wheel = (Resolve-Path -LiteralPath 'out/packages/stardataparadise_sdk-0.2.0-py3-none-any.whl').Path
-    $sdist = (Resolve-Path -LiteralPath 'out/packages/stardataparadise_sdk-0.2.0.tar.gz').Path
+    $sdkVersion = & $builder -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])'
+    if ($LASTEXITCODE) { exit $LASTEXITCODE }
+    $wheel = (Resolve-Path -LiteralPath ("out/packages/stardataparadise_sdk-" + $sdkVersion + "-py3-none-any.whl")).Path
+    $sdist = (Resolve-Path -LiteralPath ("out/packages/stardataparadise_sdk-" + $sdkVersion + ".tar.gz")).Path
 
     & python -m venv (Join-Path $prefix 'i')
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
@@ -38,6 +40,8 @@ try {
     & $installed -m pip --disable-pip-version-check install @wheelDeps --require-hashes -r tests/requirements-build.txt
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
     & $installed -m pip --disable-pip-version-check install --no-index --no-deps $wheel
+    if ($LASTEXITCODE) { exit $LASTEXITCODE }
+    & $installed -I -B -m pytest -q --import-mode=importlib -p no:cacheprovider tests/test_native.py
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
     & $installed -I -B tests/package_scan.py $wheel $sdist
     if ($LASTEXITCODE) { exit $LASTEXITCODE }

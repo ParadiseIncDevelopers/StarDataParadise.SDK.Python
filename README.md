@@ -1,6 +1,6 @@
 # StarDataParadise Python SDK
 
-Python 3.12+ için DB-API 2.0 istemcisi. StarDataParadise Server’a TLS üzerinden wire v1 ile bağlanır. Çalışma zamanında Python standart kütüphanesini kullanır. `0.2.0` paketi sabit wire sözleşmesini de içerir.
+Python 3.12+ için DB-API 2.0 istemcisi. StarDataParadise Server’a TLS üzerinden wire v1 ile bağlanır. Çalışma zamanında Python standart kütüphanesini kullanır. `0.3.0` paketi sabit wire sözleşmesini de içerir.
 
 ## Paketi kurma
 
@@ -8,7 +8,7 @@ Sürüm wheel’ini edinin veya aşağıdaki derleme adımıyla üretin. Örnek 
 
 ```powershell
 python -m venv out/client-env
-.\out\client-env\Scripts\python.exe -m pip install --no-deps .\out\packages\stardataparadise_sdk-0.2.0-py3-none-any.whl
+.\out\client-env\Scripts\python.exe -m pip install --no-deps .\out\packages\stardataparadise_sdk-0.3.0-py3-none-any.whl
 ```
 
 ## TLS ve parametreli SQL
@@ -37,6 +37,10 @@ with connect(
 - Varsayılan manuel commit kipinde bağlantı bağlamı başarıda commit, hatada rollback yapar ve bağlantıyı kapatır. Bir bağlantı tek etkin sonuç taşır. Ayrı iş parçacıkları için ayrı bağlantılar açın.
 - `callproc` ve `nextset`, yordamın OUT satırını ve sonraki sonuç kümelerini okur. `capabilities()` ile yönetim, model ve iş çağrılarının sunucu desteğini sorgulayabilirsiniz.
 - Sonucu belirsiz yazmada `OutcomeUnknown.request_token` değerini aynı kimlikle açılan yeni bağlantıda `outcome(token)` ile sorgulayın. `unknown` kaydı sonucu belirsiz bırakır.
+
+## Native SQL ve AI kapsamı
+
+`connect_native()` ayrı bir native SQL/AI oturumu açar; kullanım örneği [BUILD.md](BUILD.md) içindedir. Yeni SQL `HIST`/SQLgit ve SQL `JOB` zamanlama özellikleri ertelenmiştir ve bu sürümde etkin değildir. Mevcut `history()`, `submit_compute()` ve `job()` wire API'leri sunucunun capability/yetki kontrolleriyle korunur.
 
 ## Wheel, sdist ve testler
 

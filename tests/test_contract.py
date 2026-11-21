@@ -43,7 +43,7 @@ def query(connection, sql, bound=None):
 
 
 def test_installed_and_golden():
-    assert db.__version__ == "0.2.0" and db.apilevel == "2.0"
+    assert db.__version__ == "0.3.0" and db.apilevel == "2.0"
     assert db.paramstyle == "named" and db.threadsafety == 1
     assert "site-packages" in Path(db.__file__).parts
     archive = db.wire_contract()

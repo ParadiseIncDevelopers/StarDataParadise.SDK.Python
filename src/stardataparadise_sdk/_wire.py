@@ -99,7 +99,7 @@ class Wire:
             pending = pending[read:]
         return result
 
-    def call(self, operation, body=None, token=None):
+    def call(self, operation, body=None, token=None, *, uncertain=False):
         sock = self._socket
         if sock is None:
             raise InterfaceError("Connection closed", code=1010, sqlstate="08006")
@@ -138,24 +138,24 @@ class Wire:
             raise ValueError("Wrong Server response envelope")
         except KeyboardInterrupt as error:
             self.close()
-            if token is not None:
+            if (token is not None or uncertain):
                 raise OutcomeUnknown("Operation interrupted", code=1009, sqlstate="57014",
                                      request_token=token, unknown_outcome=True) from error
             raise
         except TimeoutError as error:
             self.close()
-            target = OutcomeUnknown if token is not None else OperationalError
+            target = OutcomeUnknown if (token is not None or uncertain) else OperationalError
             raise target("Operation timed out", code=1008, sqlstate="HYT00", request_token=token,
-                         unknown_outcome=token is not None) from error
+                         unknown_outcome=(token is not None or uncertain)) from error
         except (OSError, EOFError) as error:
             self.close()
-            target = OutcomeUnknown if token is not None else OperationalError
+            target = OutcomeUnknown if (token is not None or uncertain) else OperationalError
             raise target("Connection closed during the exchange", code=1010, sqlstate="08006",
-                         request_token=token, unknown_outcome=token is not None) from error
+                         request_token=token, unknown_outcome=(token is not None or uncertain)) from error
         except (KeyError, TypeError, ValueError, RecursionError) as error:
             self.close()
-            target = OutcomeUnknown if token is not None else InternalError
+            target = OutcomeUnknown if (token is not None or uncertain) else InternalError
             raise target("Malformed Server reply", code=1001, sqlstate="08P01", request_token=token,
-                         unknown_outcome=token is not None) from error
+                         unknown_outcome=(token is not None or uncertain)) from error
         finally:
             self.pending = 0
