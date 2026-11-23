@@ -7,6 +7,8 @@ name = "stardataparadise-sdk"
 version = "0.3.0"
 description = "Independent StarDataParadise wire v1 Python DB-API provider"
 readme = "BUILD.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12"
 
 [tool.setuptools]

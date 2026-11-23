@@ -51,3 +51,10 @@ pwsh -NoProfile -File .\ci.ps1 -Wheelhouse C:\SDP\wheelhouse -TestWheelhouse C:\
 ```
 
 CI, `out/packages` altında wheel ve sdist üretir ve paketleri ayrı ortamlara kurup sınar. Yerel canlı TLS kabulü için `-Server`, `-OpenSsl` ve `-FixtureHarness` seçeneklerini birlikte verin. [DB-API davranışı, yordam ve yönetim örnekleri](BUILD.md) · [Server ve diğer SDK’lar](https://github.com/ParadiseIncDevelopers/StarDataParadiseServer)
+
+## Lisans
+
+Özgün Python SDK, örnekler ve belgeler [MIT](LICENSE) lisanslıdır.
+Telif ve izin bildirimi korunarak ticari kullanım, değiştirme ve yeniden
+dağıtıma izin verilir. Paket metadata'sı MIT lisansını ve dağıtıma eklenecek
+LICENSE dosyasını belirtir. Ayrıntılar: [LICENSING.md](LICENSING.md).
